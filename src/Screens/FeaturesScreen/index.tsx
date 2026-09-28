@@ -1,5 +1,11 @@
 import { useMemo } from 'react'
-import { featureOptions, type FeatureKey } from '../../navigation'
+import {
+  buildFeaturePath,
+  featureOptions,
+  navigateToFeature,
+  navigateToHome,
+  type FeatureKey,
+} from '../../navigation'
 import JSONFormatter from './components/JSONFormatter'
 import Base64Tool from './components/Base64Tool'
 import RegexTester from './components/RegexTester'
@@ -22,7 +28,14 @@ const FeatureScreen = ({ feature }: FeatureScreenProps) => {
           <p className="eyebrow">Feature Workspace</p>
           <h1>{featureOptions.find((item) => item.id === selectedFeature)?.label ?? 'Feature'}</h1>
         </div>
-        <a className="back-link" href="/">
+        <a
+          className="back-link"
+          href="/"
+          onClick={(event) => {
+            event.preventDefault()
+            navigateToHome()
+          }}
+        >
           Back home
         </a>
       </header>
@@ -34,7 +47,11 @@ const FeatureScreen = ({ feature }: FeatureScreenProps) => {
             <a
               key={item.id}
               className={`pill ${selectedFeature === item.id ? 'active' : ''}`}
-              href={`/features?feature=${item.id}`}
+              href={buildFeaturePath(item.id)}
+              onClick={(event) => {
+                event.preventDefault()
+                navigateToFeature(item.id)
+              }}
             >
               {item.label}
             </a>
